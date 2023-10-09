@@ -2,6 +2,7 @@ import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./pages/Root";
+import Error from './pages/Error';
 import Poles from "./endpoints/Poles";
 import FinalParty from './endpoints/FinalParty';
 
@@ -25,6 +26,12 @@ export default function App() {
       path: "/fp",
       element: <FinalParty />,
     },
+    {
+      // 404 page
+      path: "*",
+      element: <Error />,
+    },
+    
   ], { basename: '/api' });
 
   const toggleColorScheme = (value) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
