@@ -1,6 +1,6 @@
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import Root from "./pages/Root";
 import Error from './pages/Error';
 import Poles from "./endpoints/Poles";
@@ -13,7 +13,7 @@ export default function App() {
     getInitialValueInEffect: true,
   });
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
       element: <Root />,
