@@ -1,15 +1,12 @@
+import { useParams } from 'react-router-dom';
+
 export default function Poles() {
-    const queryParameters = new URLSearchParams(window.location.search);
-    const poles = queryParameters.get("args") ?? "";
+    const { poles } = useParams();
+    
+    if (poles.length < 1) return (<>No poles specified.</>);
 
     const args = poles.split(/[\s/\-,]/);
     
-    if (args.length < 1) {
-        return (<>I have nothing do to with an empty command.</>);
-    }
-
-    if (!args) return (<>No poles specified.</>);
-
     let orderArr = Array.from({ length: option.searchWidth / 2 }, (val, idx) => idx);
 
     let order = orderArr.map(offset => (
@@ -29,9 +26,7 @@ export default function Poles() {
 
     // Convert pole count to hex
     args.forEach((pole) => {
-        if (pole != "?") {
-            console.log(parseInt(pole));
-            console.log(parseInt(pole).toString(16));
+        if (!isNaN(parseInt(pole))) {
             pattern += parseInt(pole).toString(16);
         } else {
             pattern += ".";
@@ -257,10 +252,6 @@ function makeCarawayCodeTable(from, to) {
 
         // RNG State - converted to hex format
         let hexRngState = rngStateArr[idx].toString(16).padStart(8, '0');
-
-
-        if (idx == 445 || idx == 446 || idx == 447 || idx == 448 || idx == 449 || idx == 450)
-            console.log(idx, hexRngState, code, codeInput, polesArr, station, escalator, street, bus);
 
         // Put it all together
         return {

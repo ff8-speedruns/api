@@ -1,13 +1,11 @@
+import { useParams } from 'react-router-dom';
+
 export default function FinalParty() {
-    const queryParameters = new URLSearchParams(window.location.search);
-    const fp = queryParameters.get("args") ?? "";
+    const { fp } = useParams();
+    if (fp.length < 1) return (<>No pattern specified.</>);
 
     let args = fp.split(" ");
-
-    console.log(args);
-
-    if (args.length < 1) return (<>I have nothing do to with an empty command.</>);
-
+    
     const availableVersions = ['pc', 'psx', 'psja', 'jphd'];
 
     let version = "pc";

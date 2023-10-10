@@ -19,11 +19,11 @@ export default function App() {
       element: <Root />,
     },
     {
-      path: "/poles",
+      path: "/poles/:poles",
       element: <Poles />,
     },
     {
-      path: "/fp",
+      path: "/fp/:fp",
       element: <FinalParty />,
     },
     {
