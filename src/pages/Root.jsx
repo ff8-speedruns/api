@@ -3,7 +3,7 @@ import { AppShell, Code, Header, Text, Title, Table, Box } from '@mantine/core';
 
 export default function Root() {
 
-  const serv = window.location.href;
+  const serv = `${window.location.href}#/`;
 
   const endpoints = [
     {
