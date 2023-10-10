@@ -1,4 +1,3 @@
-<script>
 /******** HELPER FUNCTIONS ********/
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
@@ -219,10 +218,7 @@ function makeCarawayCodeTable(from, to) {
     return table;
 }
 
-function execute() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const poles = urlParams.get('args') ?? "";
+function GetPoles(poles) {
 
     if (poles.length < 1) return ("No poles specified.");
 
@@ -270,5 +266,5 @@ function execute() {
 
         return response;
 }
-document.write(execute());
-</script>
+
+module.exports = { GetPoles };

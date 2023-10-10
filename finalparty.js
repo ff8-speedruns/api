@@ -1,4 +1,3 @@
-<script>
 /******** HELPER FUNCTIONS ********/
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
@@ -371,14 +370,10 @@ class FinalPartyManip {
     }
 }
 
-function execute() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const fp = urlParams.get('args') ?? "";
-    if (fp.length < 1) return "No pattern specified.";
-    
+function GetFinalParty(input) {
+    if (input.length < 1) return "No pattern specified.";
 
-    let args = fp.split(" ");
+    let args = input.split(" ");
     
     const availableVersions = ['pc', 'psx', 'psja', 'jphd'];
 
@@ -488,5 +483,5 @@ function execute() {
 
     return response;
 }
-document.write(execute());
-</script>
+
+module.exports = { GetFinalParty }
