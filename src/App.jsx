@@ -3,8 +3,6 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Root from "./pages/Root";
 import Error from './pages/Error';
-import Poles from "./endpoints/Poles";
-import FinalParty from './endpoints/FinalParty';
 
 export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorage({
