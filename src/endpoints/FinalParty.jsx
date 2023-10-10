@@ -1,6 +1,8 @@
 export default function FinalParty() {
     const queryParameters = new URLSearchParams(window.location.search);
-    const args = queryParameters.get("args").split(" ");
+    const fp = queryParameters.get("args") ?? "";
+
+    let args = fp.split(" ");
 
     console.log(args);
 
@@ -25,7 +27,7 @@ export default function FinalParty() {
         holywar = true;
     }
 
-    if (pattern.length != 12) return (<>Did not receive 12 movements in the pattern (got {pattern.length}), please check and try again.</>);
+    if (pattern.length != 12) return (<>I expected 12 movements and got {pattern.length}, try again.</>);
 
     // Recreating the whole script from scratch using the Ruby script for logic reference.
     let options = {

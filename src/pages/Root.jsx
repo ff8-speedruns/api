@@ -24,7 +24,7 @@ export default function Root() {
     <tr key={element.url}>
       <td>{element.url}</td>
       <td>{element.description}</td>
-      <td>{element.example.map((ex) => (<><Code block key={ex}>{ex}</Code><br /></>))}</td>
+      <td>{element.example.map((ex) => (<span key={ex}><Code block>{ex}</Code><br /></span>))}</td>
       <td>
         StreamElements:<br /><Code block>{`\${customapi.${element.endpoint}\${pathescape \${1:}}}`}</Code><br />
         StreamLabs:<br /><Code block>{`{readapi.${element.endpoint}{start:end}}`}</Code><br />

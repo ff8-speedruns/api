@@ -1,6 +1,6 @@
 export default function Poles() {
     const queryParameters = new URLSearchParams(window.location.search);
-    const poles = queryParameters.get("args");
+    const poles = queryParameters.get("args") ?? "";
 
     const args = poles.split(/[\s/\-,]/);
     

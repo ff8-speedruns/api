@@ -32,7 +32,7 @@ export default function App() {
       element: <Error />,
     },
     
-  ], { basename: '/api' });
+  ]);
 
   const toggleColorScheme = (value) => setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
   useHotkeys([['mod+J', () => toggleColorScheme()]]);
