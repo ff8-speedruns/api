@@ -7,16 +7,16 @@ export default function Root() {
 
   const endpoints = [
     {
-      url: `${serv}poles?args=[poles]`,
+      url: `${serv}poles/[args]`,
       description: `Returns caraway code given the pole counts. Accepts spaces, slashes, and dashes as separators.`,
       example: [`!poles [pattern]`, `!poles 5 8 12 ?`, `!poles 7-7-12`],
-      endpoint: `${serv}poles?args=`
+      endpoint: `${serv}poles/`
     },
     {
-      url: `${serv}fp?args=[poles]`,
+      url: `${serv}fp/[args]`,
       description: `Returns final party draws given Squall's movements in the time compression FMV. Accepts wasd, 2468.`,
       example: [`!party [PSX/PSJP/PC] [Pattern] [HW if you have holy war]`, `!party pc wswwdswasasw`, `!party psx 828862842428 hw`],
-      endpoint: `${serv}fp?args=`
+      endpoint: `${serv}fp/`
     },
   ];
 

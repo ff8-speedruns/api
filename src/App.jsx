@@ -19,14 +19,6 @@ export default function App() {
       element: <Root />,
     },
     {
-      path: "/poles/:poles",
-      element: <Poles />,
-    },
-    {
-      path: "/fp/:fp",
-      element: <FinalParty />,
-    },
-    {
       // 404 page
       path: "*",
       element: <Error />,

@@ -1,57 +1,4 @@
-import { useParams } from 'react-router-dom';
-
-export default function Poles() {
-    const { poles } = useParams();
-    
-    if (poles.length < 1) return (<>No poles specified.</>);
-
-    const args = poles.split(/[\s/\-,]/);
-    
-    let orderArr = Array.from({ length: option.searchWidth / 2 }, (val, idx) => idx);
-
-    let order = orderArr.map(offset => (
-        [option.defaultStartIndex + offset, option.defaultStartIndex - offset]
-    )).flat().filter(idx => idx >= 0);
-
-    // Unique values only, please.
-    order = [...new Set(order)];
-
-    let min = Math.min(...order);
-    let max = Math.max(...order);
-
-    // Generate table; remove null values.
-    const codes = makeCarawayCodeTable(min, max).filter(idx => idx != null);
-
-    let pattern = "";
-
-    // Convert pole count to hex
-    args.forEach((pole) => {
-        if (!isNaN(parseInt(pole))) {
-            pattern += parseInt(pole).toString(16);
-        } else {
-            pattern += ".";
-        }
-    });
-    let exp = new RegExp(pattern + "$");
-    // Search for the entered poles!
-    let filteredArray = codes.filter(entry => exp.test(entry.polesHex));
-    //let backupArray = [];
-    filteredArray.map(entry => {
-        entry.backup = codes.find(code => code.index == entry.index + 2);
-    })
-
-    let response = "";
-
-    if (filteredArray.length > 0)
-        response = `${filteredArray[0].code} (${filteredArray[0].input}) -> BACKUP ${filteredArray[0].backup.code} (${filteredArray[0].backup.input})`;
-    else
-        response = `Code not found D:`;
-
-    return (
-        <>{response}</>
-    );
-}
-
+<script>
 /******** HELPER FUNCTIONS ********/
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
@@ -271,3 +218,57 @@ function makeCarawayCodeTable(from, to) {
 
     return table;
 }
+
+function execute() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const poles = urlParams.get('args') ?? "";
+
+    if (poles.length < 1) return ("No poles specified.");
+
+    const args = poles.split(/[\s/\-,]/);
+    
+    let orderArr = Array.from({ length: option.searchWidth / 2 }, (val, idx) => idx);
+
+    let order = orderArr.map(offset => (
+        [option.defaultStartIndex + offset, option.defaultStartIndex - offset]
+    )).flat().filter(idx => idx >= 0);
+
+    // Unique values only, please.
+    order = [...new Set(order)];
+
+    let min = Math.min(...order);
+    let max = Math.max(...order);
+
+    // Generate table; remove null values.
+    const codes = makeCarawayCodeTable(min, max).filter(idx => idx != null);
+
+    let pattern = "";
+
+    // Convert pole count to hex
+    args.forEach((pole) => {
+        if (!isNaN(parseInt(pole))) {
+            pattern += parseInt(pole).toString(16);
+        } else {
+            pattern += ".";
+        }
+    });
+    let exp = new RegExp(pattern + "$");
+    // Search for the entered poles!
+    let filteredArray = codes.filter(entry => exp.test(entry.polesHex));
+    //let backupArray = [];
+    filteredArray.map(entry => {
+        entry.backup = codes.find(code => code.index == entry.index + 2);
+    })
+
+    let response = "";
+
+    if (filteredArray.length > 0)
+        response = `${filteredArray[0].code} (${filteredArray[0].input}) -> BACKUP ${filteredArray[0].backup.code} (${filteredArray[0].backup.input})`;
+    else
+        response = `Code not found D:`;
+
+        return response;
+}
+document.write(execute());
+</script>

@@ -1,120 +1,4 @@
-import { useParams } from 'react-router-dom';
-
-export default function FinalParty() {
-    const { fp } = useParams();
-    if (fp.length < 1) return (<>No pattern specified.</>);
-
-    let args = fp.split(" ");
-    
-    const availableVersions = ['pc', 'psx', 'psja', 'jphd'];
-
-    let version = "pc";
-    let pattern = "";
-    let holywar = false;
-
-    // If arg[0] doesn't match any available version, version was probably left out.
-    if (!availableVersions.includes(args[0].toLowerCase())) {
-        pattern = args[0].toLowerCase();
-    } else {
-        version = args[0].toLowerCase();
-        pattern = args[1].toLowerCase();
-    }
-
-    // The last element dictates whether we have holy war
-    if (args.slice(-1)[0].toLowerCase() === "hw") {
-        holywar = true;
-    }
-
-    if (pattern.length != 12) return (<>I expected 12 movements and got {pattern.length}, try again.</>);
-
-    // Recreating the whole script from scratch using the Ruby script for logic reference.
-    let options = {
-        // Target party. Multiple settings are possible.
-        targets: [
-            ["irvine", "squall", "zell"],
-            ["irvine", "squall", "selphie"],
-            ["irvine", "squall", "rinoa"],
-            ["irvine", "zell", "quistis"],
-            ["irvine", "zell", "selphie"],
-            ["irvine", "zell", "rinoa"],
-            ["irvine", "selphie", "rinoa"],
-            ["irvine", "selphie", "quistis"],
-            ["irvine", "quistis", "rinoa"],
-        ],
-
-        // Index used as a search reference
-        base: 12,
-
-        // Search for this width with base as the center
-        width: 9000,
-
-        // reverse, ascending, descending, other
-        order: "reverse",
-
-        // Perform a hard reset immediately before (DISC4 start data)
-        hardware_reset: false,
-
-        // Idling duration when traveling the final map at the fastest speed
-        // ps2fast_ja:22.0, ps2fast_na:22.7?, pc-fr-2013:21.5,
-        last_map_duration: 21.5,
-
-        // If last_map_duration% 0.5 is within this range, do not wait on the last map
-        last_map_safe_range: [0.10, 0.20, 0.30, 0.40],
-
-        // Squall movements
-        movements_size: pattern.length,
-    }
-
-    // Get the proper version
-    switch (version) {
-        case "psx":
-            options.last_map_duration = 22.7;
-            break;
-        case "psja":
-            options.last_map_duration = 22;
-            break;
-        case "jphd":
-            options.last_map_duration = 21.2;
-            break;
-        case "pc":
-        default:
-            options.last_map_duration = 21.5;
-    }
-
-    options.holywar = holywar;
-
-    // Calculate the table and manip
-    let manip = new FinalPartyManip(options);
-    let last_party = manip.search_last_party(pattern);
-
-    if (!last_party) return ("No match found D:");
-
-    let response = `(${version.toUpperCase()}${holywar ? " / Holy War" : ""}) `;
-    last_party.forEach((party) => {
-        // Sort by number of draws
-        party.target_offset_tbl.sort((a, b) => a.offset - b.offset); // b - a for reverse sort
-
-        // If Holy War is checked, only show results with the fastest attackers
-        if (options.holywar === true) {
-            let holyParty = ['selphie', 'zell', 'irvine', 'squall'];
-
-            party.target_offset_tbl = party.target_offset_tbl.filter(val => {
-                return holyParty.includes(val.party[0]) && holyParty.includes(val.party[1]) && holyParty.includes(val.party[2]);
-            })
-        }
-
-        let tbl = party.target_offset_tbl;
-
-        response += `+${tbl[0].offset}: ${tbl[0].party.join("/")}`;
-
-        if (party.target_offset_tbl.length > 1) {
-            response += ` // +${tbl[1].offset}: ${tbl[1].party.join("/")}`;
-        }
-    })
-
-    return (<>{response}</>);
-}
-
+<script>
 /******** HELPER FUNCTIONS ********/
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
@@ -486,3 +370,123 @@ class FinalPartyManip {
         return new Party(tbl[idx]);
     }
 }
+
+function execute() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const fp = urlParams.get('args') ?? "";
+    if (fp.length < 1) return "No pattern specified.";
+    
+
+    let args = fp.split(" ");
+    
+    const availableVersions = ['pc', 'psx', 'psja', 'jphd'];
+
+    let version = "pc";
+    let pattern = "";
+    let holywar = false;
+
+    // If arg[0] doesn't match any available version, version was probably left out.
+    if (!availableVersions.includes(args[0].toLowerCase())) {
+        pattern = args[0].toLowerCase();
+    } else {
+        version = args[0].toLowerCase();
+        pattern = args[1].toLowerCase();
+    }
+
+    // The last element dictates whether we have holy war
+    if (args.slice(-1)[0].toLowerCase() === "hw") {
+        holywar = true;
+    }
+
+    if (pattern.length != 12) return `I expected 12 inputs and got ${pattern.length}, try again.`;
+
+    // Recreating the whole script from scratch using the Ruby script for logic reference.
+    let options = {
+        // Target party. Multiple settings are possible.
+        targets: [
+            ["irvine", "squall", "zell"],
+            ["irvine", "squall", "selphie"],
+            ["irvine", "squall", "rinoa"],
+            ["irvine", "zell", "quistis"],
+            ["irvine", "zell", "selphie"],
+            ["irvine", "zell", "rinoa"],
+            ["irvine", "selphie", "rinoa"],
+            ["irvine", "selphie", "quistis"],
+            ["irvine", "quistis", "rinoa"],
+        ],
+
+        // Index used as a search reference
+        base: 12,
+
+        // Search for this width with base as the center
+        width: 9000,
+
+        // reverse, ascending, descending, other
+        order: "reverse",
+
+        // Perform a hard reset immediately before (DISC4 start data)
+        hardware_reset: false,
+
+        // Idling duration when traveling the final map at the fastest speed
+        // ps2fast_ja:22.0, ps2fast_na:22.7?, pc-fr-2013:21.5,
+        last_map_duration: 21.5,
+
+        // If last_map_duration% 0.5 is within this range, do not wait on the last map
+        last_map_safe_range: [0.10, 0.20, 0.30, 0.40],
+
+        // Squall movements
+        movements_size: pattern.length,
+    }
+
+    // Get the proper version
+    switch (version) {
+        case "psx":
+            options.last_map_duration = 22.7;
+            break;
+        case "psja":
+            options.last_map_duration = 22;
+            break;
+        case "jphd":
+            options.last_map_duration = 21.2;
+            break;
+        case "pc":
+        default:
+            options.last_map_duration = 21.5;
+    }
+
+    options.holywar = holywar;
+
+    // Calculate the table and manip
+    let manip = new FinalPartyManip(options);
+    let last_party = manip.search_last_party(pattern);
+
+    if (!last_party) return "No match found D:";
+
+    let response = `(${version.toUpperCase()}${holywar ? " / Holy War" : ""}) `;
+    last_party.forEach((party) => {
+        // Sort by number of draws
+        party.target_offset_tbl.sort((a, b) => a.offset - b.offset); // b - a for reverse sort
+
+        // If Holy War is checked, only show results with the fastest attackers
+        if (options.holywar === true) {
+            let holyParty = ['selphie', 'zell', 'irvine', 'squall'];
+
+            party.target_offset_tbl = party.target_offset_tbl.filter(val => {
+                return holyParty.includes(val.party[0]) && holyParty.includes(val.party[1]) && holyParty.includes(val.party[2]);
+            })
+        }
+
+        let tbl = party.target_offset_tbl;
+
+        response += `+${tbl[0].offset}: ${tbl[0].party.join("/")}`;
+
+        if (party.target_offset_tbl.length > 1) {
+            response += ` // +${tbl[1].offset}: ${tbl[1].party.join("/")}`;
+        }
+    })
+
+    return response;
+}
+document.write(execute());
+</script>
