@@ -1,19 +1,20 @@
 import Siteheader from '../components/Siteheader';
-import { AppShell, Code, Header, Text, Title, Table, Box } from '@mantine/core';
+import { Alert, AppShell, Code, Header, Text, Title, Table, Box } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 export default function Root() {
 
-  const serv = `${window.location.href}#/`;
+  const serv = `https://ff8-api.onrender.com/`;
 
   const endpoints = [
     {
-      url: `${serv}poles/[args]`,
+      url: `${serv}poles/:pattern`,
       description: `Returns caraway code given the pole counts. Accepts spaces, slashes, and dashes as separators.`,
       example: [`!poles [pattern]`, `!poles 5 8 12 ?`, `!poles 7-7-12`],
       endpoint: `${serv}poles/`
     },
     {
-      url: `${serv}fp/[args]`,
+      url: `${serv}party/:system :pattern :holywar`,
       description: `Returns final party draws given Squall's movements in the time compression FMV. Accepts wasd, 2468.`,
       example: [`!party [PSX/PSJP/PC] [Pattern] [HW if you have holy war]`, `!party pc wswwdswasasw`, `!party psx 828862842428 hw`],
       endpoint: `${serv}fp/`
@@ -48,6 +49,9 @@ export default function Root() {
       </Box>
       <Box my="lg">
         <Title order={2}>Available Endpoints:</Title>
+        <Alert icon={<IconAlertCircle size="1rem" />} title="Latency Warning" color="orange" variant="filled">
+          Since the API is hosted on a free service, it may take up to 5 seconds to respond to your chat command. This should, however, be fine considering that these manipulations are usually performed well in advance of when they are needed.
+        </Alert>
         <Table verticalSpacing="lg" striped highlightOnHover withColumnBorders>
           <thead>
             <tr>
