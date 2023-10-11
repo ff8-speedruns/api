@@ -52,7 +52,7 @@ export default function Root() {
         <Alert icon={<IconAlertCircle size="1rem" />} title="Latency Warning" color="orange" variant="filled" my="sm">
           Since the API is hosted on a free service, it may take up to 5 seconds to respond to your chat command. This should, however, be fine considering that these manipulations are usually performed well in advance of when they are needed.
           <br /><br />
-          The (free) server spins down after 5 minutes of inactivity, so <strong>it is almost guaranteed that the first command you send per stream will fail</strong>, as it will likely time out when you send the first command while it spins back up. Just re-send the command after a few seconds to try again.
+          The (free) server spins down after 5 minutes of inactivity, so <strong>it is almost guaranteed that the first command you send per stream will fail</strong>, as it will likely time out while it spins back up. Just re-send the command after a few seconds to try again.
         </Alert>
         <Table verticalSpacing="lg" striped highlightOnHover withColumnBorders>
           <thead>
