@@ -17,7 +17,7 @@ export default function Root() {
       url: `${serv}party/:system :pattern :holywar`,
       description: `Returns final party draws given Squall's movements in the time compression FMV. Accepts wasd, 2468.`,
       example: [`!party [PSX/PSJP/PC] [Pattern] [HW if you have holy war]`, `!party pc wswwdswasasw`, `!party psx 828862842428 hw`],
-      endpoint: `${serv}fp/`
+      endpoint: `${serv}party/`
     },
   ];
 
